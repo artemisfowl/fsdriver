@@ -1,3 +1,7 @@
+# Author: Sayantan Bhattacharya (artemisfowl)
+# URL: git@github.com:artemisfowl/fsdriver.git
+# License: GNU GPL v3
+
 # Name of the output binary
 BINARY_NAME = fsdriver
 MAIN_PATH = ./cmd/fsdriver
