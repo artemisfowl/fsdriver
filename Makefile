@@ -34,7 +34,7 @@ all: clean
 
 	# Windows
 	GOOS=windows GOARCH=amd64 go build $(LDFLAGS) -o build/$(BINARY_NAME)-windows-amd64.exe $(MAIN_PATH)
-	GOOS=windows GOARCH=windows-arm64 go build $(LDFLAGS) -o build/$(BINARY_NAME)-windows-arm64.exe $(MAIN_PATH)
+	GOOS=windows GOARCH=arm64 go build $(LDFLAGS) -o build/$(BINARY_NAME)-windows-arm64.exe $(MAIN_PATH)
 
 	@echo "All binaries successfully built inside the 'build/' directory."
 
