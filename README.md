@@ -11,5 +11,5 @@ without needing manual version bumps in code.
 ### Build commands
 
 | Command						  | Description																													|
-| :---							  | ---:																																|
+| :---							  | :---																																|
 | `make`/`make build` | Builds the native binary for your host OS inside `./build/fsdriver` |
