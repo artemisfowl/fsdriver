@@ -9,7 +9,7 @@ MAIN_PATH = ./cmd/fsdriver
 # Automatic versioning using Git
 VERSION ?= $(shell git describe --tags --always --dirty 2>/dev/null || echo "dev")
 COMMIT ?= $(shell git rev-parse --short HEAD 2>/dev/null || echo "none")
-DATE ?= $(shell git rev-parse --short HEAD 2>/dev/null || echo "none")
+DATE ?= $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
 
 # Linker flags to inject variables into the binary
 LDFLAGS = -ldflags "-s -w -X main.Version=$(VERSION) -X main.Commit=$(COMMIT) -X main.Date=$(DATE)"
