@@ -16,3 +16,25 @@ without needing manual version bumps in code.
 | `make all`				  | Cross-compiles binaries for Linux, macOS and Windows (amd64 & arm64) |
 | `make version`		  | Prints the current Git version strings without building							 |
 | `make clean`			  | Removes all the compiled artifacts in the `./build` directory				 |
+
+### Checking the version of a compiled/downloaded binary
+
+To verify the version information embedded inside any compiled/downloaded executable, run the binary
+with the `--version` flag.
+
+```bash
+./build/fsdriver --version
+fsdriver version v1.0.0 (commit: ef60be1, built at: 2026-10-18T07:51:00Z)
+```
+
+### Tagging a new release
+
+To release a new version, simply tag your commit in Git and run `make all`:
+
+```bash
+git tag -a v1.0.0 -m "Release v1.0.0"
+make all
+```
+
+All generated binaries in `./build/` will automatically reflect the specified tag(in the aforementioned
+example, it would be `v1.0.0`)
