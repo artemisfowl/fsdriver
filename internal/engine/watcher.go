@@ -21,10 +21,20 @@ type LogEvent struct {
 
 type WatcherEngine struct {
 	Directories []string
-	Filters     FilterRules
 	OutputChan  chan LogEvent
-	offsets     map[string]int64
-	mu          sync.Mutex
+
+	filterMu sync.RWMutex
+	Filters  FilterRules
+
+	offsets map[string]int64
+	fileMu  sync.Mutex
+}
+
+func (w *WatcherEngine) UpdateFilters(newFilters FilterRules) {
+	w.filterMu.Lock()
+	defer w.filterMu.Unlock()
+
+	w.Filters = newFilters
 }
 
 func NewWatcherEngine(dirs []string, filters FilterRules, outChan chan LogEvent) *WatcherEngine {
@@ -89,8 +99,10 @@ func (w *WatcherEngine) scanDirectory(dir string) {
 }
 
 func (w *WatcherEngine) processFile(path string) {
-	w.mu.Lock()
-	defer w.mu.Unlock()
+	// w.mu.Lock()
+	// defer w.mu.Unlock()
+	w.fileMu.Lock()
+	defer w.fileMu.Unlock()
 
 	// Skip directories
 	if info, err := os.Stat(path); err != nil || info.IsDir() {
@@ -127,10 +139,16 @@ func (w *WatcherEngine) processFile(path string) {
 		return
 	}
 
-	scanner := bufio.NewScanner(file) {
+	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line := scanner.Text()
-		if w.Filters.Matches(line) {
+
+		w.filterMu.RLock()
+		matches := w.Filters.Matches(line)
+		w.filterMu.RUnlock()
+
+		// if w.Filters.Matches(line) {
+		if matches {
 			w.OutputChan <- LogEvent{
 				Path:      path,
 				Line:      line,
@@ -138,9 +156,9 @@ func (w *WatcherEngine) processFile(path string) {
 			}
 		}
 	}
-    if err := scanner.Err(); err != nil {
-        log.Printf("Scanner error on %s: %v", path, err)
-    }
+	if err := scanner.Err(); err != nil {
+		log.Printf("Scanner error on %s: %v", path, err)
+	}
 
 	// Save the file offset
 	newOffset, _ := file.Seek(0, io.SeekCurrent)
