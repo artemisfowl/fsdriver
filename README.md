@@ -27,6 +27,22 @@ with the `--version` flag.
 fsdriver version v1.0.0 (commit: ef60be1, built at: 2026-10-18T07:51:00Z)
 ```
 
+### Checking help information
+
+To check the help information embedded inside the binary, run the binary with the `--help` flag.
+
+```bash
+./build/fsdriver --help
+fsdriver - A Cross-platform, language agnostic file monitoring driver
+
+Author: artemisfowl <skb655952@gmail.com>
+License: GNU General Public License v3.0 (GPLv3)
+
+Usage: ./fsdriver
+  -version
+        Print the version information and exit
+```
+
 ### Tagging a new release
 
 To release a new version, simply tag your commit in Git and run `make all`:
