@@ -22,7 +22,7 @@ func (f *FilterRules) Matches(line string) bool {
 				break
 			}
 		}
-		if matched {
+		if !matched {
 			return false
 		}
 	}
