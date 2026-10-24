@@ -32,5 +32,6 @@ go.work.sum
 # .idea/
 # .vscode/
 
-# Build directory
+# Directories
 build/
+examples/
