@@ -154,7 +154,10 @@ func (w *WatcherEngine) processFile(path string) {
                     Path:      path,
                     Line:      line,
                     Timestamp: time.Now(),
-                }
+                }:
+                default:
+                    // Buffer is full, drop the event
+                    ; // (no-op) here
             }
 		}
 	}
