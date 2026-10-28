@@ -149,11 +149,13 @@ func (w *WatcherEngine) processFile(path string) {
 
 		// if w.Filters.Matches(line) {
 		if matches {
-			w.OutputChan <- LogEvent{
-				Path:      path,
-				Line:      line,
-				Timestamp: time.Now(),
-			}
+            select {
+                case w.OutputChan <- LogEvent{
+                    Path:      path,
+                    Line:      line,
+                    Timestamp: time.Now(),
+                }
+            }
 		}
 	}
 	if err := scanner.Err(); err != nil {
