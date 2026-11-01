@@ -60,20 +60,20 @@ Just as WebDriver provides a standardized HTTP interface to control web browsers
 
 ### Core Components
 
-1. **HTTP Server & Router ([`internal/server/handler.go`](file:///Users/oldgod/data/code/test_bed/skunkworks/ned/go/fsdriver/internal/server/handler.go))**:
+1. **HTTP Server & Router ([`internal/server/handler.go`](internal/server/handler.go))**:
    - Implements standard REST endpoints to create, update, and terminate sessions.
    - Provides a Server-Sent Events (SSE) streaming endpoint using Go's `http.Flusher` to push structured JSON records (`LogEvent`) to connected clients as new lines are written.
 
-2. **Session Manager ([`internal/server/session.go`](file:///Users/oldgod/data/code/test_bed/skunkworks/ned/go/fsdriver/internal/server/session.go))**:
+2. **Session Manager ([`internal/server/session.go`](internal/server/session.go))**:
    - Manages independent, concurrent monitoring sessions mapped by cryptographically secure 128-bit random hexadecimal IDs.
    - Handles thread-safe session registration, resource cleanup, buffered channels, and context cancellation to prevent goroutine leaks.
 
-3. **Watcher Engine ([`internal/engine/watcher.go`](file:///Users/oldgod/data/code/test_bed/skunkworks/ned/go/fsdriver/internal/engine/watcher.go))**:
+3. **Watcher Engine ([`internal/engine/watcher.go`](internal/engine/watcher.go))**:
    - **FS Event Monitoring**: Subscribes to directory create/write events using [`fsnotify`](https://github.com/fsnotify/fsnotify).
    - **Offset & Rotation Tracking**: Tracks file read positions (`offsets map[string]int64`). If a file size drops below the last recorded offset (log rotation or truncation), the offset automatically resets to 0.
    - **Line Scanner**: Incremental reads using `bufio.Scanner` ensure that only newly appended lines are read from disk.
 
-4. **Dynamic Filter Rules ([`internal/engine/filter.go`](file:///Users/oldgod/data/code/test_bed/skunkworks/ned/go/fsdriver/internal/engine/filter.go))**:
+4. **Dynamic Filter Rules ([`internal/engine/filter.go`](internal/engine/filter.go))**:
    - Encapsulates include and exclude substring filtering logic.
    - Thread-safe updates guarded by a read-write mutex (`sync.RWMutex`) allow filters to be swapped during active streaming without missing events or corrupting memory.
 
@@ -349,7 +349,7 @@ curl -X PUT http://localhost:4444/sessions/<SESSION_ID>/filters \
   -d '{"include_patterns": ["ERROR"]}'
 ```
 
-A complete Python example demonstrating live streaming, dynamic filter switching, and cleanup is available in [`examples/test_client.py`](file:///Users/oldgod/data/code/test_bed/skunkworks/ned/go/fsdriver/examples/test_client.py).
+A complete Python example demonstrating live streaming, dynamic filter switching, and cleanup is available in [`examples/test_client.py`](examples/test_client.py).
 
 ---
 
