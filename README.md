@@ -12,6 +12,9 @@ Just as WebDriver provides a standardized HTTP interface to control web browsers
 - [Architecture](#architecture)
   - [System Overview](#system-overview)
   - [Core Components](#core-components)
+- [Command-Line Options](#command-line-options)
+  - [Available Flags](#available-flags)
+  - [Usage Examples](#usage-examples)
 - [API Endpoints Reference](#api-endpoints-reference)
   - [1. Create Session (`POST /sessions`)](#1-create-session-post-sessions)
   - [2. Stream Log Events (`GET /sessions/:id/stream`)](#2-stream-log-events-get-sessionsidstream)
@@ -73,6 +76,40 @@ Just as WebDriver provides a standardized HTTP interface to control web browsers
 4. **Dynamic Filter Rules ([`internal/engine/filter.go`](file:///Users/oldgod/data/code/test_bed/skunkworks/ned/go/fsdriver/internal/engine/filter.go))**:
    - Encapsulates include and exclude substring filtering logic.
    - Thread-safe updates guarded by a read-write mutex (`sync.RWMutex`) allow filters to be swapped during active streaming without missing events or corrupting memory.
+
+---
+
+## Command-Line Options
+
+`fsdriver` is configured via command-line flags when starting the daemon. Both single-dash (`-flag`) and double-dash (`--flag`) formats are supported.
+
+### Available Flags
+
+| Flag | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `-host` | `string` | `"127.0.0.1"` | Host/IP address to bind the HTTP server to (e.g., `0.0.0.0` for all interfaces). |
+| `-port` | `string` | `"4444"` | Port number for the HTTP server to listen on. |
+| `-version` | `bool` | `false` | Prints version details (Git tag, commit SHA, build date, and license) and exits. |
+| `-help` / `--help` | `bool` | `false` | Displays usage instructions, metadata, and available command-line flags, then exits. |
+
+### Usage Examples
+
+```bash
+# Start server with default host (127.0.0.1) and default port (4444)
+./build/fsdriver
+
+# Start server on a custom port
+./build/fsdriver -port 8080
+
+# Bind to all network interfaces on port 4444
+./build/fsdriver -host 0.0.0.0 -port 4444
+
+# Print version and build details
+./build/fsdriver -version
+
+# Print command-line usage and help
+./build/fsdriver -help
+```
 
 ---
 
@@ -354,10 +391,12 @@ Author:  Sayantan Bhattacharya
 License: GNU General Public License v3.0 (GPLv3)
 
 Usage of ./fsdriver:
+  -host string
+    	Host/IP address for the fsdriver HTTP server (default "127.0.0.1")
   -port string
-        Port for the fsdriver HTTP server (default "4444")
+    	Port for the fsdriver HTTP server (default "4444")
   -version
-        Print version information and exit
+    	Print version information and exit
 ```
 
 ### Tagging a new release
