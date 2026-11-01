@@ -38,6 +38,7 @@ func main() {
 	}
 
 	portFlag := flag.String("port", "4444", "Port for the fsdriver HTTP server")
+	hostFlag := flag.String("host", "127.0.0.1", "Host/IP address for the fsdriver HTTP server")
 	versionFlag := flag.Bool("version", false, "Print version information and exit")
 	flag.Parse()
 
@@ -52,7 +53,7 @@ func main() {
 	srv := server.NewServer(sessionManager)
 
 	httpServer := &http.Server{
-		Addr:    ":" + *portFlag,
+		Addr:    *hostFlag + ":" + *portFlag,
 		Handler: srv.RegisterRoutes(),
 	}
 
